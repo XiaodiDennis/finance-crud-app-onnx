@@ -1,0 +1,70 @@
+<Window
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    x:Class="FinanceCrudApp.Views.AccountWindow"
+    Title="Account Management"
+    Width="980"
+    Height="650"
+    WindowStartupLocation="CenterOwner">
+
+    <Grid ColumnDefinitions="1.2*,1*" Margin="16" ColumnSpacing="16">
+        <Border Grid.Column="0" Padding="16" Background="#F3F6FA" CornerRadius="8">
+            <StackPanel Spacing="12">
+                <TextBlock Text="Accounts"
+                           FontSize="22"
+                           FontWeight="Bold"/>
+
+                <ListBox x:Name="AccountsListBox"
+                         Height="440"
+                         SelectionChanged="OnAccountSelected"/>
+
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <Button Content="Refresh"
+                            Width="120"
+                            Click="OnRefreshClick"/>
+                    <Button Content="New"
+                            Width="120"
+                            Click="OnNewClick"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Column="1" Padding="16" Background="#F8F9FB" CornerRadius="8">
+            <StackPanel Spacing="12">
+                <TextBlock Text="Account Form"
+                           FontSize="22"
+                           FontWeight="Bold"/>
+
+                <TextBlock Text="Name" />
+                <TextBox x:Name="NameTextBox"
+                         PlaceholderText="Enter account name" />
+
+                <TextBlock Text="Account Type" />
+                <ComboBox x:Name="TypeComboBox" />
+
+                <TextBlock Text="Current Balance" />
+                <TextBox x:Name="BalanceTextBox"
+                         PlaceholderText="Enter balance, e.g. 1500.50" />
+
+                <CheckBox x:Name="IsActiveCheckBox"
+                          Content="Is Active"
+                          IsChecked="True"/>
+
+                <TextBlock x:Name="MessageTextBlock"
+                           TextWrapping="Wrap"/>
+
+                <StackPanel Orientation="Horizontal" Spacing="10" Margin="0,12,0,0">
+                    <Button Content="Save"
+                            Width="120"
+                            Click="OnSaveClick"/>
+                    <Button Content="Delete"
+                            Width="120"
+                            Click="OnDeleteClick"/>
+                    <Button Content="Clear"
+                            Width="120"
+                            Click="OnNewClick"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

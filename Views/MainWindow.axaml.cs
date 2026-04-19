@@ -1,0 +1,113 @@
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Interactivity;
+using Avalonia.Markup.Xaml;
+using FinanceCrudApp.Models;
+
+namespace FinanceCrudApp.Views;
+
+public partial class MainWindow : Window
+{
+    private User? _currentUser;
+
+    private TextBlock? _welcomeTextBlock;
+    private TextBlock? _roleTextBlock;
+    private Button? _categoryButton;
+    private Button? _merchantButton;
+    private Button? _accountButton;
+    private Button? _transactionButton;
+
+    public MainWindow()
+    {
+        InitializeComponent();
+        BindControls();
+        ApplyUserState();
+    }
+
+    public MainWindow(User user) : this()
+    {
+        _currentUser = user;
+        ApplyUserState();
+    }
+
+    private void InitializeComponent()
+    {
+        AvaloniaXamlLoader.Load(this);
+    }
+
+    private void BindControls()
+    {
+        _welcomeTextBlock = this.FindControl<TextBlock>("WelcomeTextBlock");
+        _roleTextBlock = this.FindControl<TextBlock>("RoleTextBlock");
+        _categoryButton = this.FindControl<Button>("CategoryButton");
+        _merchantButton = this.FindControl<Button>("MerchantButton");
+        _accountButton = this.FindControl<Button>("AccountButton");
+        _transactionButton = this.FindControl<Button>("TransactionButton");
+    }
+
+    private void ApplyUserState()
+    {
+        if (_welcomeTextBlock == null || _roleTextBlock == null ||
+            _categoryButton == null || _merchantButton == null ||
+            _accountButton == null || _transactionButton == null)
+            return;
+
+        if (_currentUser == null)
+        {
+            _welcomeTextBlock.Text = "Welcome";
+            _roleTextBlock.Text = "Role: not loaded";
+            _categoryButton.IsEnabled = false;
+            _merchantButton.IsEnabled = false;
+            _accountButton.IsEnabled = false;
+            _transactionButton.IsEnabled = false;
+            return;
+        }
+
+        bool isAdmin = _currentUser.Role == "admin";
+
+        _welcomeTextBlock.Text = $"Welcome, {_currentUser.Username}";
+        _roleTextBlock.Text = $"Role: {_currentUser.Role}";
+        _categoryButton.IsEnabled = isAdmin;
+        _merchantButton.IsEnabled = isAdmin;
+        _accountButton.IsEnabled = isAdmin;
+        _transactionButton.IsEnabled = isAdmin;
+    }
+
+    private void OnOpenCategoryManagementClick(object? sender, RoutedEventArgs e)
+    {
+        var categoryWindow = new CategoryWindow();
+        categoryWindow.Show();
+    }
+
+    private void OnOpenMerchantManagementClick(object? sender, RoutedEventArgs e)
+    {
+        var merchantWindow = new MerchantWindow();
+        merchantWindow.Show();
+    }
+
+    private void OnOpenAccountManagementClick(object? sender, RoutedEventArgs e)
+    {
+        var accountWindow = new AccountWindow();
+        accountWindow.Show();
+    }
+
+    private void OnOpenTransactionManagementClick(object? sender, RoutedEventArgs e)
+    {
+        var transactionWindow = new TransactionWindow();
+        transactionWindow.Show();
+    }
+
+    private void OnLogoutClick(object? sender, RoutedEventArgs e)
+    {
+        var loginWindow = new LoginWindow();
+
+        if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            desktop.MainWindow = loginWindow;
+        }
+
+        loginWindow.Show();
+        Close();
+    }
+}

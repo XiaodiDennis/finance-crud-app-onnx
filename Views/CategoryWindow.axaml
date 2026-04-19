@@ -1,0 +1,75 @@
+<Window
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    x:Class="FinanceCrudApp.Views.CategoryWindow"
+    Title="Category Management"
+    Width="950"
+    Height="620"
+    WindowStartupLocation="CenterOwner">
+
+    <Grid ColumnDefinitions="1.2*,1*" Margin="16" ColumnSpacing="16">
+        <!-- Left panel -->
+        <Border Grid.Column="0" Padding="16" Background="#F3F6FA" CornerRadius="8">
+            <StackPanel Spacing="12">
+                <TextBlock Text="Categories"
+                           FontSize="22"
+                           FontWeight="Bold"/>
+
+                <ListBox x:Name="CategoriesListBox"
+                         Height="420"
+                         SelectionChanged="OnCategorySelected"/>
+
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <Button Content="Refresh"
+                            Width="120"
+                            Click="OnRefreshClick"/>
+                    <Button Content="New"
+                            Width="120"
+                            Click="OnNewClick"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- Right panel -->
+        <Border Grid.Column="1" Padding="16" Background="#F8F9FB" CornerRadius="8">
+            <StackPanel Spacing="12">
+                <TextBlock Text="Category Form"
+                           FontSize="22"
+                           FontWeight="Bold"/>
+
+                <TextBlock Text="Name" />
+                <TextBox x:Name="NameTextBox"
+                         PlaceholderText="Enter category name" />
+
+                <TextBlock Text="Type" />
+                <ComboBox x:Name="TypeComboBox" />
+
+                <TextBlock Text="Description" />
+                <TextBox x:Name="DescriptionTextBox"
+                         Height="100"
+                         AcceptsReturn="True"
+                         TextWrapping="Wrap"
+                         PlaceholderText="Optional description" />
+
+                <CheckBox x:Name="IsActiveCheckBox"
+                          Content="Is Active"
+                          IsChecked="True"/>
+
+                <TextBlock x:Name="MessageTextBlock"
+                           TextWrapping="Wrap"/>
+
+                <StackPanel Orientation="Horizontal" Spacing="10" Margin="0,12,0,0">
+                    <Button Content="Save"
+                            Width="120"
+                            Click="OnSaveClick"/>
+                    <Button Content="Delete"
+                            Width="120"
+                            Click="OnDeleteClick"/>
+                    <Button Content="Clear"
+                            Width="120"
+                            Click="OnNewClick"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

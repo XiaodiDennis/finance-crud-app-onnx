@@ -1,0 +1,44 @@
+<Window
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    x:Class="FinanceCrudApp.Views.LoginWindow"
+    Title="Login"
+    Width="420"
+    Height="320"
+    WindowStartupLocation="CenterScreen">
+
+    <Border Padding="24">
+        <StackPanel Spacing="12">
+            <TextBlock Text="Finance CRUD App"
+                       FontSize="24"
+                       FontWeight="Bold" />
+
+            <TextBlock Text="Username" />
+            <TextBox x:Name="UsernameTextBox"
+                     PlaceholderText="Enter username" />
+
+            <TextBlock Text="Password" />
+            <TextBox x:Name="PasswordTextBox"
+                     PlaceholderText="Enter password" />
+
+            <Button Content="Login"
+                    HorizontalAlignment="Stretch"
+                    Click="OnLoginClick" />
+
+            <TextBlock x:Name="ErrorTextBlock"
+                       Foreground="Red"
+                       TextWrapping="Wrap" />
+
+            <Border Margin="0,10,0,0"
+                    Padding="10"
+                    Background="#F3F6FA">
+                <StackPanel Spacing="4">
+                    <TextBlock Text="Default accounts for testing:"
+                               FontWeight="Bold"/>
+                    <TextBlock Text="admin / admin123" />
+                    <TextBlock Text="viewer / viewer123" />
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </Border>
+</Window>

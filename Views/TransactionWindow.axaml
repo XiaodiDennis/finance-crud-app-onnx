@@ -1,0 +1,84 @@
+<Window
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    x:Class="FinanceCrudApp.Views.TransactionWindow"
+    Title="Transaction Management"
+    Width="1180"
+    Height="760"
+    WindowStartupLocation="CenterOwner">
+
+    <Grid ColumnDefinitions="1.3*,1*" Margin="16" ColumnSpacing="16">
+        <Border Grid.Column="0" Padding="16" Background="#F3F6FA" CornerRadius="8">
+            <StackPanel Spacing="12">
+                <TextBlock Text="Transactions"
+                           FontSize="22"
+                           FontWeight="Bold"/>
+
+                <ListBox x:Name="TransactionsListBox"
+                         Height="560"
+                         SelectionChanged="OnTransactionSelected"/>
+
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <Button Content="Refresh"
+                            Width="120"
+                            Click="OnRefreshClick"/>
+                    <Button Content="New"
+                            Width="120"
+                            Click="OnNewClick"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Column="1" Padding="16" Background="#F8F9FB" CornerRadius="8">
+            <ScrollViewer>
+                <StackPanel Spacing="12">
+                    <TextBlock Text="Transaction Form"
+                               FontSize="22"
+                               FontWeight="Bold"/>
+
+                    <TextBlock Text="Date (yyyy-MM-dd)" />
+                    <TextBox x:Name="DateTextBox"
+                             PlaceholderText="2026-04-20" />
+
+                    <TextBlock Text="Amount" />
+                    <TextBox x:Name="AmountTextBox"
+                             PlaceholderText="Enter amount" />
+
+                    <TextBlock Text="Type" />
+                    <ComboBox x:Name="TypeComboBox" />
+
+                    <TextBlock Text="Account" />
+                    <ComboBox x:Name="AccountComboBox" />
+
+                    <TextBlock Text="Category" />
+                    <ComboBox x:Name="CategoryComboBox" />
+
+                    <TextBlock Text="Merchant" />
+                    <ComboBox x:Name="MerchantComboBox" />
+
+                    <TextBlock Text="Note" />
+                    <TextBox x:Name="NoteTextBox"
+                             Height="100"
+                             AcceptsReturn="True"
+                             TextWrapping="Wrap"
+                             PlaceholderText="Optional note" />
+
+                    <TextBlock x:Name="MessageTextBlock"
+                               TextWrapping="Wrap"/>
+
+                    <StackPanel Orientation="Horizontal" Spacing="10" Margin="0,12,0,0">
+                        <Button Content="Save"
+                                Width="120"
+                                Click="OnSaveClick"/>
+                        <Button Content="Delete"
+                                Width="120"
+                                Click="OnDeleteClick"/>
+                        <Button Content="Clear"
+                                Width="120"
+                                Click="OnNewClick"/>
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+    </Grid>
+</Window>

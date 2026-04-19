@@ -1,0 +1,72 @@
+<Window
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    x:Class="FinanceCrudApp.Views.MainWindow"
+    Title="Finance CRUD App"
+    Width="1120"
+    Height="700"
+    WindowStartupLocation="CenterScreen">
+
+    <Grid RowDefinitions="Auto,*" Margin="16">
+        <Border Grid.Row="0"
+                Padding="16"
+                Background="#F3F6FA"
+                CornerRadius="8">
+            <StackPanel Spacing="8">
+                <TextBlock Text="Finance CRUD App"
+                           FontSize="24"
+                           FontWeight="Bold"/>
+                <TextBlock x:Name="WelcomeTextBlock"
+                           FontSize="16"/>
+                <TextBlock x:Name="RoleTextBlock"
+                           FontSize="14"/>
+            </StackPanel>
+        </Border>
+
+        <StackPanel Grid.Row="1"
+                    Margin="0,20,0,0"
+                    Spacing="12">
+            <TextBlock Text="Implemented so far:"
+                       FontWeight="Bold"
+                       FontSize="18"/>
+            <TextBlock Text="• Database initialization is working" />
+            <TextBlock Text="• Basic authorization is working" />
+            <TextBlock Text="• Category CRUD is working" />
+            <TextBlock Text="• Merchant CRUD is working" />
+            <TextBlock Text="• Account CRUD is working" />
+            <TextBlock Text="• Next phase: Transaction CRUD" />
+
+            <StackPanel Orientation="Horizontal"
+                        Spacing="10"
+                        Margin="0,20,0,0">
+                <Button x:Name="CategoryButton"
+                        Content="Categories"
+                        Width="180"
+                        IsEnabled="False"
+                        Click="OnOpenCategoryManagementClick"/>
+
+                <Button x:Name="MerchantButton"
+                        Content="Merchants"
+                        Width="180"
+                        IsEnabled="False"
+                        Click="OnOpenMerchantManagementClick"/>
+
+                <Button x:Name="AccountButton"
+                        Content="Accounts"
+                        Width="180"
+                        IsEnabled="False"
+                        Click="OnOpenAccountManagementClick"/>
+
+                <Button x:Name="TransactionButton"
+                        Content="Transactions"
+                        Width="180"
+                        IsEnabled="False"
+                        Click="OnOpenTransactionManagementClick"/>
+
+                <Button Content="Logout"
+                        Width="120"
+                        Click="OnLogoutClick"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
