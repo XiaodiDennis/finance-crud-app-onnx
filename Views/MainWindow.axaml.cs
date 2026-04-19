@@ -4,6 +4,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using FinanceCrudApp.Models;
+using FinanceCrudApp.Onnx;
 
 namespace FinanceCrudApp.Views;
 
@@ -13,6 +14,7 @@ public partial class MainWindow : Window
 
     private TextBlock? _welcomeTextBlock;
     private TextBlock? _roleTextBlock;
+    private TextBlock? _onnxStatusTextBlock;
     private Button? _categoryButton;
     private Button? _merchantButton;
     private Button? _accountButton;
@@ -23,6 +25,7 @@ public partial class MainWindow : Window
         InitializeComponent();
         BindControls();
         ApplyUserState();
+        ApplyOnnxStatus();
     }
 
     public MainWindow(User user) : this()
@@ -40,6 +43,7 @@ public partial class MainWindow : Window
     {
         _welcomeTextBlock = this.FindControl<TextBlock>("WelcomeTextBlock");
         _roleTextBlock = this.FindControl<TextBlock>("RoleTextBlock");
+        _onnxStatusTextBlock = this.FindControl<TextBlock>("OnnxStatusTextBlock");
         _categoryButton = this.FindControl<Button>("CategoryButton");
         _merchantButton = this.FindControl<Button>("MerchantButton");
         _accountButton = this.FindControl<Button>("AccountButton");
@@ -72,6 +76,12 @@ public partial class MainWindow : Window
         _merchantButton.IsEnabled = isAdmin;
         _accountButton.IsEnabled = isAdmin;
         _transactionButton.IsEnabled = isAdmin;
+    }
+
+    private void ApplyOnnxStatus()
+    {
+        if (_onnxStatusTextBlock != null)
+            _onnxStatusTextBlock.Text = OnnxRuntimeState.ModelService.StatusMessage;
     }
 
     private void OnOpenCategoryManagementClick(object? sender, RoutedEventArgs e)

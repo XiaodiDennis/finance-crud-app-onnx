@@ -4,10 +4,10 @@
     x:Class="FinanceCrudApp.Views.MainWindow"
     Title="Finance CRUD App"
     Width="1120"
-    Height="700"
+    Height="760"
     WindowStartupLocation="CenterScreen">
 
-    <Grid RowDefinitions="Auto,*" Margin="16">
+    <Grid RowDefinitions="Auto,Auto,*" Margin="16">
         <Border Grid.Row="0"
                 Padding="16"
                 Background="#F3F6FA"
@@ -23,7 +23,21 @@
             </StackPanel>
         </Border>
 
-        <StackPanel Grid.Row="1"
+        <Border Grid.Row="1"
+                Margin="0,16,0,0"
+                Padding="12"
+                Background="#F8F9FB"
+                CornerRadius="8">
+            <StackPanel Spacing="6">
+                <TextBlock Text="ONNX integration status"
+                           FontWeight="Bold"
+                           FontSize="16"/>
+                <TextBlock x:Name="OnnxStatusTextBlock"
+                           TextWrapping="Wrap"/>
+            </StackPanel>
+        </Border>
+
+        <StackPanel Grid.Row="2"
                     Margin="0,20,0,0"
                     Spacing="12">
             <TextBlock Text="Implemented so far:"
@@ -34,7 +48,8 @@
             <TextBlock Text="• Category CRUD is working" />
             <TextBlock Text="• Merchant CRUD is working" />
             <TextBlock Text="• Account CRUD is working" />
-            <TextBlock Text="• Next phase: Transaction CRUD" />
+            <TextBlock Text="• Transaction CRUD is working" />
+            <TextBlock Text="• ONNX safe loader integration is added" />
 
             <StackPanel Orientation="Horizontal"
                         Spacing="10"
