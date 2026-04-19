@@ -3,8 +3,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     x:Class="FinanceCrudApp.Views.MainWindow"
     Title="Finance CRUD App"
-    Width="1120"
-    Height="760"
+    Width="1280"
+    Height="820"
     WindowStartupLocation="CenterScreen">
 
     <Grid RowDefinitions="Auto,Auto,*" Margin="16">
@@ -49,32 +49,38 @@
             <TextBlock Text="• Merchant CRUD is working" />
             <TextBlock Text="• Account CRUD is working" />
             <TextBlock Text="• Transaction CRUD is working" />
-            <TextBlock Text="• ONNX safe loader integration is added" />
+            <TextBlock Text="• ONNX category suggestion is working" />
+            <TextBlock Text="• Analytics dashboard is working" />
 
             <StackPanel Orientation="Horizontal"
                         Spacing="10"
                         Margin="0,20,0,0">
+                <Button x:Name="DashboardButton"
+                        Content="Dashboard"
+                        Width="160"
+                        Click="OnOpenDashboardClick"/>
+
                 <Button x:Name="CategoryButton"
                         Content="Categories"
-                        Width="180"
+                        Width="160"
                         IsEnabled="False"
                         Click="OnOpenCategoryManagementClick"/>
 
                 <Button x:Name="MerchantButton"
                         Content="Merchants"
-                        Width="180"
+                        Width="160"
                         IsEnabled="False"
                         Click="OnOpenMerchantManagementClick"/>
 
                 <Button x:Name="AccountButton"
                         Content="Accounts"
-                        Width="180"
+                        Width="160"
                         IsEnabled="False"
                         Click="OnOpenAccountManagementClick"/>
 
                 <Button x:Name="TransactionButton"
                         Content="Transactions"
-                        Width="180"
+                        Width="160"
                         IsEnabled="False"
                         Click="OnOpenTransactionManagementClick"/>
 

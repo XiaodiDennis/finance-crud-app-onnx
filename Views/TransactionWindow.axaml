@@ -4,7 +4,7 @@
     x:Class="FinanceCrudApp.Views.TransactionWindow"
     Title="Transaction Management"
     Width="1180"
-    Height="760"
+    Height="780"
     WindowStartupLocation="CenterOwner">
 
     <Grid ColumnDefinitions="1.3*,1*" Margin="16" ColumnSpacing="16">
@@ -15,7 +15,7 @@
                            FontWeight="Bold"/>
 
                 <ListBox x:Name="TransactionsListBox"
-                         Height="560"
+                         Height="580"
                          SelectionChanged="OnTransactionSelected"/>
 
                 <StackPanel Orientation="Horizontal" Spacing="10">
@@ -55,6 +55,17 @@
 
                     <TextBlock Text="Merchant" />
                     <ComboBox x:Name="MerchantComboBox" />
+
+                    <Button Content="Suggest Category (ONNX)"
+                            Width="220"
+                            Click="OnSuggestCategoryClick"/>
+
+                    <CheckBox x:Name="AutoApplyOnnxCheckBox"
+                              Content="Auto-apply suggestion when confidence is high"
+                              IsChecked="True"/>
+
+                    <TextBlock x:Name="OnnxResultTextBlock"
+                               TextWrapping="Wrap"/>
 
                     <TextBlock Text="Note" />
                     <TextBox x:Name="NoteTextBox"

@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using FinanceCrudApp.Models;
+using FinanceCrudApp.Onnx;
 using FinanceCrudApp.Repositories;
 
 namespace FinanceCrudApp.Views;
@@ -24,6 +25,8 @@ public partial class TransactionWindow : Window
     private ComboBox? _accountComboBox;
     private ComboBox? _categoryComboBox;
     private ComboBox? _merchantComboBox;
+    private CheckBox? _autoApplyOnnxCheckBox;
+    private TextBlock? _onnxResultTextBlock;
     private TextBox? _noteTextBox;
     private TextBlock? _messageTextBlock;
 
@@ -52,6 +55,8 @@ public partial class TransactionWindow : Window
         _accountComboBox = this.FindControl<ComboBox>("AccountComboBox");
         _categoryComboBox = this.FindControl<ComboBox>("CategoryComboBox");
         _merchantComboBox = this.FindControl<ComboBox>("MerchantComboBox");
+        _autoApplyOnnxCheckBox = this.FindControl<CheckBox>("AutoApplyOnnxCheckBox");
+        _onnxResultTextBlock = this.FindControl<TextBlock>("OnnxResultTextBlock");
         _noteTextBox = this.FindControl<TextBox>("NoteTextBox");
         _messageTextBlock = this.FindControl<TextBlock>("MessageTextBlock");
     }
@@ -107,6 +112,9 @@ public partial class TransactionWindow : Window
         if (_noteTextBox != null)
             _noteTextBox.Text = "";
 
+        if (_onnxResultTextBlock != null)
+            _onnxResultTextBlock.Text = "";
+
         if (_transactionsListBox != null)
             _transactionsListBox.SelectedItem = null;
 
@@ -117,6 +125,12 @@ public partial class TransactionWindow : Window
     {
         if (_messageTextBlock != null)
             _messageTextBlock.Text = text;
+    }
+
+    private void SetOnnxResult(string text)
+    {
+        if (_onnxResultTextBlock != null)
+            _onnxResultTextBlock.Text = text;
     }
 
     private void OnTransactionSelected(object? sender, SelectionChangedEventArgs e)
@@ -147,7 +161,70 @@ public partial class TransactionWindow : Window
         if (_noteTextBox != null)
             _noteTextBox.Text = transaction.Note ?? "";
 
+        SetOnnxResult("");
         SetMessage($"Editing transaction ID {_selectedTransactionId}.");
+    }
+
+    private void OnSuggestCategoryClick(object? sender, RoutedEventArgs e)
+    {
+        string amountText = _amountTextBox?.Text?.Trim() ?? "";
+        string type = _typeComboBox?.SelectedItem?.ToString() ?? "Expense";
+
+        if (!decimal.TryParse(amountText, out decimal amount))
+        {
+            SetMessage("Amount must be a valid number before ONNX suggestion.");
+            return;
+        }
+
+        if (_accountComboBox?.SelectedItem is not Account account)
+        {
+            SetMessage("Please select an account before ONNX suggestion.");
+            return;
+        }
+
+        if (_merchantComboBox?.SelectedItem is not Merchant merchant)
+        {
+            SetMessage("Please select a merchant before ONNX suggestion.");
+            return;
+        }
+
+        if (OnnxRuntimeState.ModelService.TrySuggestCategoryWithConfidence(
+            amount,
+            type,
+            merchant.MerchantId,
+            account.AccountId,
+            out OnnxCategorySuggestionResult? result,
+            out string message))
+        {
+            if (result == null)
+            {
+                SetMessage("ONNX returned no result.");
+                return;
+            }
+
+            SetOnnxResult(result.ToDisplayText());
+
+            if (_autoApplyOnnxCheckBox?.IsChecked == true && result.IsHighConfidence)
+            {
+                if (_categoryComboBox?.ItemsSource is IEnumerable<Category> categories)
+                {
+                    var matchedCategory = categories.FirstOrDefault(c =>
+                        string.Equals(c.Name, result.SuggestedCategory, StringComparison.OrdinalIgnoreCase));
+
+                    if (matchedCategory != null)
+                    {
+                        _categoryComboBox.SelectedItem = matchedCategory;
+                        SetMessage($"Category auto-applied: {result.SuggestedCategory}");
+                        return;
+                    }
+                }
+            }
+
+            SetMessage(message);
+            return;
+        }
+
+        SetMessage(message);
     }
 
     private void OnRefreshClick(object? sender, RoutedEventArgs e)

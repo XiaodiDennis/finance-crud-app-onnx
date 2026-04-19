@@ -15,6 +15,7 @@ public partial class MainWindow : Window
     private TextBlock? _welcomeTextBlock;
     private TextBlock? _roleTextBlock;
     private TextBlock? _onnxStatusTextBlock;
+    private Button? _dashboardButton;
     private Button? _categoryButton;
     private Button? _merchantButton;
     private Button? _accountButton;
@@ -44,6 +45,7 @@ public partial class MainWindow : Window
         _welcomeTextBlock = this.FindControl<TextBlock>("WelcomeTextBlock");
         _roleTextBlock = this.FindControl<TextBlock>("RoleTextBlock");
         _onnxStatusTextBlock = this.FindControl<TextBlock>("OnnxStatusTextBlock");
+        _dashboardButton = this.FindControl<Button>("DashboardButton");
         _categoryButton = this.FindControl<Button>("CategoryButton");
         _merchantButton = this.FindControl<Button>("MerchantButton");
         _accountButton = this.FindControl<Button>("AccountButton");
@@ -52,36 +54,66 @@ public partial class MainWindow : Window
 
     private void ApplyUserState()
     {
-        if (_welcomeTextBlock == null || _roleTextBlock == null ||
-            _categoryButton == null || _merchantButton == null ||
-            _accountButton == null || _transactionButton == null)
-            return;
-
         if (_currentUser == null)
         {
-            _welcomeTextBlock.Text = "Welcome";
-            _roleTextBlock.Text = "Role: not loaded";
-            _categoryButton.IsEnabled = false;
-            _merchantButton.IsEnabled = false;
-            _accountButton.IsEnabled = false;
-            _transactionButton.IsEnabled = false;
+            if (_welcomeTextBlock != null)
+                _welcomeTextBlock.Text = "Welcome";
+
+            if (_roleTextBlock != null)
+                _roleTextBlock.Text = "Role: not loaded";
+
+            if (_dashboardButton != null)
+                _dashboardButton.IsEnabled = false;
+
+            if (_categoryButton != null)
+                _categoryButton.IsEnabled = false;
+
+            if (_merchantButton != null)
+                _merchantButton.IsEnabled = false;
+
+            if (_accountButton != null)
+                _accountButton.IsEnabled = false;
+
+            if (_transactionButton != null)
+                _transactionButton.IsEnabled = false;
+
             return;
         }
 
         bool isAdmin = _currentUser.Role == "admin";
 
-        _welcomeTextBlock.Text = $"Welcome, {_currentUser.Username}";
-        _roleTextBlock.Text = $"Role: {_currentUser.Role}";
-        _categoryButton.IsEnabled = isAdmin;
-        _merchantButton.IsEnabled = isAdmin;
-        _accountButton.IsEnabled = isAdmin;
-        _transactionButton.IsEnabled = isAdmin;
+        if (_welcomeTextBlock != null)
+            _welcomeTextBlock.Text = $"Welcome, {_currentUser.Username}";
+
+        if (_roleTextBlock != null)
+            _roleTextBlock.Text = $"Role: {_currentUser.Role}";
+
+        if (_dashboardButton != null)
+            _dashboardButton.IsEnabled = true;
+
+        if (_categoryButton != null)
+            _categoryButton.IsEnabled = isAdmin;
+
+        if (_merchantButton != null)
+            _merchantButton.IsEnabled = isAdmin;
+
+        if (_accountButton != null)
+            _accountButton.IsEnabled = isAdmin;
+
+        if (_transactionButton != null)
+            _transactionButton.IsEnabled = isAdmin;
     }
 
     private void ApplyOnnxStatus()
     {
         if (_onnxStatusTextBlock != null)
             _onnxStatusTextBlock.Text = OnnxRuntimeState.ModelService.StatusMessage;
+    }
+
+    private void OnOpenDashboardClick(object? sender, RoutedEventArgs e)
+    {
+        var dashboardWindow = new DashboardWindow();
+        dashboardWindow.Show();
     }
 
     private void OnOpenCategoryManagementClick(object? sender, RoutedEventArgs e)

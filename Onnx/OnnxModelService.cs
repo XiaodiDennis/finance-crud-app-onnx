@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.ML.OnnxRuntime;
+using Microsoft.ML.OnnxRuntime.Tensors;
 
 namespace FinanceCrudApp.Onnx;
 
@@ -16,7 +17,7 @@ public sealed class OnnxModelService : IDisposable
 
     public OnnxModelService()
     {
-        ModelPath = Path.Combine(AppContext.BaseDirectory, "onnx_models", "transaction_category.onnx");
+        ModelPath = Path.Combine(AppContext.BaseDirectory, "onnx_models", "transaction_category_proba.onnx");
     }
 
     public void Initialize()
@@ -47,20 +48,107 @@ public sealed class OnnxModelService : IDisposable
         }
     }
 
-    public IReadOnlyList<string> GetInputNames()
+    public bool TrySuggestCategoryWithConfidence(
+        decimal amount,
+        string transactionType,
+        int merchantId,
+        int accountId,
+        out OnnxCategorySuggestionResult? result,
+        out string message)
     {
-        if (_session == null)
-            return Array.Empty<string>();
+        result = null;
 
-        return _session.InputMetadata.Keys.ToList();
+        if (_session == null)
+        {
+            message = StatusMessage;
+            return false;
+        }
+
+        try
+        {
+            float isIncome = transactionType == "Income" ? 1f : 0f;
+
+            var inputTensor = new DenseTensor<float>(
+                new float[]
+                {
+                    (float)amount,
+                    isIncome,
+                    merchantId,
+                    accountId
+                },
+                new[] { 1, 4 });
+
+            var inputs = new List<NamedOnnxValue>
+            {
+                NamedOnnxValue.CreateFromTensor("float_input", inputTensor)
+            };
+
+            using var outputs = _session.Run(inputs);
+
+            var labelOutput = outputs.FirstOrDefault(o =>
+                o.Name.Contains("label", StringComparison.OrdinalIgnoreCase))
+                ?? outputs.First();
+
+            var probabilityOutput = outputs.FirstOrDefault(o =>
+                o.Name.Contains("prob", StringComparison.OrdinalIgnoreCase));
+
+            long label = labelOutput.AsTensor<long>().ToArray().FirstOrDefault();
+
+            if (probabilityOutput == null)
+            {
+                message = "ONNX probability output not found.";
+                return false;
+            }
+
+            var probs = probabilityOutput.AsTensor<float>().ToArray();
+
+            if (probs.Length < 3)
+            {
+                message = "ONNX probability output is incomplete.";
+                return false;
+            }
+
+            string? suggestedCategory = MapLabel(label);
+
+            if (string.IsNullOrWhiteSpace(suggestedCategory))
+            {
+                message = "ONNX returned an unknown category label.";
+                return false;
+            }
+
+            float food = probs[0];
+            float transport = probs[1];
+            float salary = probs[2];
+            float confidence = Math.Max(food, Math.Max(transport, salary));
+
+            result = new OnnxCategorySuggestionResult
+            {
+                SuggestedCategory = suggestedCategory,
+                Confidence = confidence,
+                FoodProbability = food,
+                TransportProbability = transport,
+                SalaryProbability = salary
+            };
+
+            message = result.ToDisplayText();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            message = $"ONNX inference failed: {ex.Message}";
+            return false;
+        }
     }
 
-    public IReadOnlyList<string> GetOutputNames()
+    private string? MapLabel(long label)
     {
-        if (_session == null)
-            return Array.Empty<string>();
-
-        return _session.OutputMetadata.Keys.ToList();
+        return label switch
+        {
+            1 => "Food",
+            2 => "Transport",
+            3 => "Salary",
+            _ => null
+        };
     }
 
     public void Dispose()

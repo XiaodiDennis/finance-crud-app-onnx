@@ -1,0 +1,98 @@
+<Window
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    x:Class="FinanceCrudApp.Views.DashboardWindow"
+    Title="Analytics Dashboard"
+    Width="1240"
+    Height="860"
+    WindowStartupLocation="CenterOwner">
+
+    <ScrollViewer>
+        <StackPanel Margin="16" Spacing="16">
+
+            <TextBlock Text="Analytics Dashboard"
+                       FontSize="24"
+                       FontWeight="Bold"/>
+
+            <WrapPanel Orientation="Horizontal">
+                <Border Width="170" Margin="6" Padding="12" Background="#F3F6FA" CornerRadius="8">
+                    <StackPanel>
+                        <TextBlock Text="Categories" FontWeight="Bold"/>
+                        <TextBlock x:Name="CategoryCountTextBlock" FontSize="20"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Width="170" Margin="6" Padding="12" Background="#F3F6FA" CornerRadius="8">
+                    <StackPanel>
+                        <TextBlock Text="Merchants" FontWeight="Bold"/>
+                        <TextBlock x:Name="MerchantCountTextBlock" FontSize="20"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Width="170" Margin="6" Padding="12" Background="#F3F6FA" CornerRadius="8">
+                    <StackPanel>
+                        <TextBlock Text="Accounts" FontWeight="Bold"/>
+                        <TextBlock x:Name="AccountCountTextBlock" FontSize="20"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Width="170" Margin="6" Padding="12" Background="#F3F6FA" CornerRadius="8">
+                    <StackPanel>
+                        <TextBlock Text="Transactions" FontWeight="Bold"/>
+                        <TextBlock x:Name="TransactionCountTextBlock" FontSize="20"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Width="170" Margin="6" Padding="12" Background="#F8FBF6" CornerRadius="8">
+                    <StackPanel>
+                        <TextBlock Text="Total Income" FontWeight="Bold"/>
+                        <TextBlock x:Name="TotalIncomeTextBlock" FontSize="20"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Width="170" Margin="6" Padding="12" Background="#FFF8F6" CornerRadius="8">
+                    <StackPanel>
+                        <TextBlock Text="Total Expense" FontWeight="Bold"/>
+                        <TextBlock x:Name="TotalExpenseTextBlock" FontSize="20"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Width="170" Margin="6" Padding="12" Background="#F6F9FF" CornerRadius="8">
+                    <StackPanel>
+                        <TextBlock Text="Net Balance" FontWeight="Bold"/>
+                        <TextBlock x:Name="NetBalanceTextBlock" FontSize="20"/>
+                    </StackPanel>
+                </Border>
+            </WrapPanel>
+
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="16">
+                <Border Grid.Column="0" Padding="12" Background="#F8F9FB" CornerRadius="8">
+                    <StackPanel Spacing="10">
+                        <TextBlock Text="Expense Distribution by Category"
+                                   FontSize="18"
+                                   FontWeight="Bold"/>
+                        <ContentControl x:Name="ExpenseChartHost" Height="360"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="1" Padding="12" Background="#F8F9FB" CornerRadius="8">
+                    <StackPanel Spacing="10">
+                        <TextBlock Text="Net Totals by Month"
+                                   FontSize="18"
+                                   FontWeight="Bold"/>
+                        <ContentControl x:Name="MonthlyChartHost" Height="360"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <Border Padding="12" Background="#F8F9FB" CornerRadius="8">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="Recent Daily Expense Trend"
+                               FontSize="18"
+                               FontWeight="Bold"/>
+                    <ContentControl x:Name="DailyChartHost" Height="320"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</Window>
